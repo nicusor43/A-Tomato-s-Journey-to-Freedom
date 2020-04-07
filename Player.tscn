@@ -1,0 +1,77 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://assets/Sprites/ardei.png" type="Texture" id=2]
+[ext_resource path="res://assets/Sprites/tilesetOpenGameBackground.png" type="Texture" id=3]
+[ext_resource path="res://assets/Sprites/HealthBar_back.png" type="Texture" id=4]
+[ext_resource path="res://assets/Sprites/HealthBar_front.png" type="Texture" id=5]
+[ext_resource path="res://HealthBar.gd" type="Script" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "RUn"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 18, 21 )
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+MAX_SPEED = 400
+ACCELERATION = 1800
+GRAVITY = 700
+JUMP_FORCE = 400
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -7.62939e-006, 1 )
+scale = Vector2( 1.35268, 1.27681 )
+texture = ExtResource( 2 )
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RUn = SubResource( 1 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 1.00137, -3.75516 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 8, -1 )
+current = true
+zoom = Vector2( 0.7, 0.7 )
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
+
+[node name="Sky" type="Sprite" parent="ParallaxBackground"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.359154, -0.693581 )
+shape = SubResource( 2 )
+
+[node name="HealthBar" type="TextureProgress" parent="."]
+margin_left = -25.0
+margin_top = -45.0
+margin_right = -9.0
+margin_bottom = -29.0
+rect_scale = Vector2( 3.28, 1 )
+value = 100.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
+tint_progress = Color( 0.301961, 0.890196, 0.0823529, 1 )
+script = ExtResource( 6 )

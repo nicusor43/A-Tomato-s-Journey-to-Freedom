@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ElKilla.gd" type="Script" id=1]
+[ext_resource path="res://Patru.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/Sprites/ElKilla.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6.67576, 15.4872 )
+
+[node name="ElKilla" type="KinematicBody2D"]
+scale = Vector2( 1.53331, 1.64083 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+detect_radius = 125
+fire_rate = 0.2
+Patru = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.416773, 0.595386 )
+shape = SubResource( 1 )
+
+[node name="Visibility" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visibility"]
+scale = Vector2( 1.00598, 1.01388 )
+
+[node name="ShootTimer" type="Timer" parent="."]
+[connection signal="body_entered" from="Visibility" to="." method="_on_Visibility_body_entered"]
+[connection signal="body_exited" from="Visibility" to="." method="_on_Visibility_body_exited"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
