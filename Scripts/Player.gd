@@ -12,19 +12,28 @@ export var JUMP_FORCE  = 500
 
 var health = 100
 var dmg = 10
+var mouse_pos
 
 var check_death = false
 var is_jumping = false
+var face_right = true
+var gun_show = false
+var can_shoot = true
 
 const FIREBALL = preload("res://Scenes/Fireball.tscn")
+const BULLET = preload("res://Scenes/Bullet.tscn")
 
 var motion = Vector2.ZERO
 
 
 
-onready var sprite = $Sprite
+onready var sprite = $PlayerNode/Sprite
 onready var animation_player = $AnimationPlayer
-onready var pos = $Position2D
+onready var pos = $PlayerNode/Position2D
+
+func _ready():
+	$PlayerNode/Gun.hide()
+	$ShootTimer.wait_time = .15
 
 func _physics_process(delta):
 	var x_input = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -33,7 +42,14 @@ func _physics_process(delta):
 		animation_player.play("RUn")
 		motion.x += x_input * ACCELERATION * delta
 		motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
-		sprite.flip_h = x_input < 0 
+
+	#Change the player either left or right
+	if x_input < 0:
+		face_right = false
+	elif x_input > 0:
+		face_right = true
+	
+	$PlayerNode.scale.x = -1 if !face_right else 1
 	
 	motion.y += GRAVITY * delta
 	
@@ -55,28 +71,52 @@ func _physics_process(delta):
 			
 		if x_input == 0: 
 			motion.x  = lerp(motion.x, 0, AIR_RESISTANCE)
-			
-	if Input.is_action_just_pressed("ui_focus_next"):
-		var fireball = FIREBALL.instance()
-		get_parent().add_child(fireball)
-		fireball.global_position = $Position2D.global_position
-		fireball.direction = -1 if sprite.flip_h else 1
+	
 		
 	motion = move_and_slide_with_snap(motion, snap, Vector2.UP)
 
 func _process(delta):
+	print("pos  ", self.position.x , "  global  ", self.global_position.x)
 	if health <= 0:
 			check_death = true
 	if check_death == true:
 		get_tree().reload_current_scene()
 	if position.y > 1500:
 		check_death = true
-
+		
+	if Input.is_action_just_pressed("ui_focus_next") and !gun_show:
+		var fireball = FIREBALL.instance()
+		get_parent().add_child(fireball)
+		fireball.global_position = $PlayerNode/Position2D.global_position
+		fireball.direction = -1 if !face_right else 1
 	
+	if gun_show:
+		mouse_pos = get_global_mouse_position()
+		$PlayerNode/Gun.look_at(mouse_pos)
+		if Input.is_action_pressed("ui_focus_next") and can_shoot:
+			shoot(pos)
+			
+
+		
 func take_damage():
 	health -= dmg
 	
 func change_level():
-	get_tree().change_scene("Level2.tscn")
+	get_tree().change_scene("Scenes/Level2.tscn")
+	
+func gun_pickup():
+	$PlayerNode/Gun.show()
+	gun_show = true
+	
+func shoot(pos):
+	var b = BULLET.instance()
+	var a = (mouse_pos - $PlayerNode/Gun.global_position).angle()
+	#TODO post pe reddit sau issue de ce trb sa fac chestia asta ca sa mearga lol
+	b.start($PlayerNode/Gun/BulletPoint.global_position - global_position + position, a)
+	get_parent().add_child(b)
+	can_shoot = false
+	$ShootTimer.start()
 	
 
+func _on_ShootTimer_timeout():
+	can_shoot = true
