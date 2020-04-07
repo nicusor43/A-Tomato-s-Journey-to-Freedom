@@ -1,11 +1,15 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://World.gd" type="Script" id=1]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/World.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/tilesets/TileMap.tres" type="TileSet" id=3]
-[ext_resource path="res://Path2D.gd" type="Script" id=4]
-[ext_resource path="res://ElKilla.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/Path2D.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/ElKilla.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/Sprites/exit.png" type="Texture" id=6]
+
+
+
+
 
 [sub_resource type="Curve2D" id=1]
 _data = {

@@ -5,7 +5,8 @@
 [ext_resource path="res://assets/Sprites/tilesetOpenGameBackground.png" type="Texture" id=3]
 [ext_resource path="res://assets/Sprites/HealthBar_back.png" type="Texture" id=4]
 [ext_resource path="res://assets/Sprites/HealthBar_front.png" type="Texture" id=5]
-[ext_resource path="res://HealthBar.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/HealthBar.gd" type="Script" id=6]
+
 
 [sub_resource type="Animation" id=1]
 resource_name = "RUn"

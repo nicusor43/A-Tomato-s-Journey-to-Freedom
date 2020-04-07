@@ -1,8 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://ElKilla.gd" type="Script" id=1]
-[ext_resource path="res://Patru.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/ElKilla.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Patru.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/Sprites/ElKilla.png" type="Texture" id=3]
+
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6.67576, 15.4872 )
