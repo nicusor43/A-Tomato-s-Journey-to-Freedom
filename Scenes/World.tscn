@@ -7,10 +7,6 @@
 [ext_resource path="res://Scenes/ElKilla.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/Sprites/exit.png" type="Texture" id=6]
 
-
-
-
-
 [sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 2668.75, 34.0098, 0, 0, 0, 0, 2872.63, 32.9018, 0, 0, 0, 0, 2668.75, 32.9018 )

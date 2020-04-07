@@ -8,14 +8,19 @@ export var FRICTION = 0.25
 export var GRAVITY = 42
 export var JUMP_FORCE  = 500
 
+
+
 var health = 100
 var dmg = 10
 
 var check_death = false
+var is_jumping = false
 
-const FIREBALL = preload("res://Fireball.tscn")
+const FIREBALL = preload("res://Scenes/Fireball.tscn")
 
 var motion = Vector2.ZERO
+
+
 
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
@@ -32,12 +37,17 @@ func _physics_process(delta):
 	
 	motion.y += GRAVITY * delta
 	
+	var snap = Vector2.DOWN * 32 if !is_jumping else Vector2.ZERO
+	
 	if is_on_floor():
 		if x_input == 0:
 			motion.x  = lerp(motion.x, 0, FRICTION)
 			
+		is_jumping = false
+		
 		if Input.is_action_just_pressed("ui_up"):
 			motion.y = -JUMP_FORCE
+			is_jumping = true
 	
 	else:
 		if Input.is_action_just_released("ui_up") and motion.y < -JUMP_FORCE/2:
@@ -51,7 +61,8 @@ func _physics_process(delta):
 		get_parent().add_child(fireball)
 		fireball.global_position = $Position2D.global_position
 		fireball.direction = -1 if sprite.flip_h else 1
-	motion = move_and_slide_with_snap(motion, Vector2.UP)
+		
+	motion = move_and_slide_with_snap(motion, snap, Vector2.UP)
 
 func _process(delta):
 	if health <= 0:
