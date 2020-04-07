@@ -20,7 +20,7 @@ extents = Vector2( 17.2307, 15.1111 )
 position = Vector2( 377, 197 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 2857, -296 )
+position = Vector2( -50, 5 )
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2( 0, -3 )

@@ -20,3 +20,7 @@ func _on_Patru_body_entered(body):
 			body.take_damage()
 		queue_free()
 	
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	queue_free()
