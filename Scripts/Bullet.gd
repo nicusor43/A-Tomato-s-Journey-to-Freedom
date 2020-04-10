@@ -18,7 +18,7 @@ func _physics_process(delta):
 	
 func _on_Bullet_body_entered(body):
 	if body.name != "Player":
-		if body.name == "ElKilla" or body.name == "Sickle":
+		if body.name == "ElKilla" or body.name == "Sickle" or body.name == "DustBoss":
 			body.take_damage()
 		queue_free()
 		

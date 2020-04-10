@@ -1,13 +1,17 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Bullet.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/Sprites/bullet.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 5 )
 
 [node name="Bullet" type="Area2D"]
+scale = Vector2( 0.485814, 0.500703 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 2.125, 1.8125 )

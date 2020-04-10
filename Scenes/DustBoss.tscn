@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/DustBoss.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/DustProj.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/Sprites/DustBoss.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14, 20 )
+
+[node name="DustBoss" type="KinematicBody2D"]
+scale = Vector2( 2, 2 )
+script = ExtResource( 1 )
+DustProj = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="LeftPosition" type="Position2D" parent="."]
+position = Vector2( -14.5, -0.5 )
+
+[node name="RightPosition" type="Position2D" parent="."]
+position = Vector2( 15, -0.5 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

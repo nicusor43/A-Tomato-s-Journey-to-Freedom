@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/Sprites/tilesetOpenGameBackground.png" type="Texture" id=2]
@@ -7,12 +7,14 @@
 [ext_resource path="res://assets/Sprites/HealthBar_back.png" type="Texture" id=5]
 [ext_resource path="res://assets/Sprites/HealthBar_front.png" type="Texture" id=6]
 [ext_resource path="res://Scripts/HealthBar.gd" type="Script" id=7]
+[ext_resource path="res://assets/Sprites/SlowMoBack.png" type="Texture" id=8]
+[ext_resource path="res://assets/Sprites/SlowMoProg.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/SlowMoBar.gd" type="Script" id=10]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 18, 21 )
 
-[sub_resource type="Animation" id=1]
-resource_name = "RUn"
+[sub_resource type="Animation" id=2]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerNode/Sprite:frame")
@@ -36,10 +38,10 @@ JUMP_FORCE = 400
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.359154, -0.693581 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RUn = SubResource( 1 )
+anims/RUn = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 8, -1 )
@@ -65,11 +67,12 @@ texture = ExtResource( 3 )
 hframes = 2
 
 [node name="Gun" type="Sprite" parent="PlayerNode"]
+visible = false
 position = Vector2( 24, -4 )
 texture = ExtResource( 4 )
 
 [node name="BulletPoint" type="Position2D" parent="PlayerNode/Gun"]
-position = Vector2( 12, -4 )
+position = Vector2( 16, -4 )
 
 [node name="Position2D" type="Position2D" parent="PlayerNode"]
 position = Vector2( 1.00137, -3.75516 )
@@ -87,4 +90,23 @@ tint_progress = Color( 0.301961, 0.890196, 0.0823529, 1 )
 script = ExtResource( 7 )
 
 [node name="ShootTimer" type="Timer" parent="."]
+
+[node name="SlowMoBar" type="TextureProgress" parent="."]
+margin_left = -15.0
+margin_top = -56.0
+margin_right = 1.0
+margin_bottom = -40.0
+rect_scale = Vector2( 1.91412, 1.87334 )
+max_value = 25.0
+step = 0.2
+value = 25.0
+texture_under = ExtResource( 8 )
+texture_progress = ExtResource( 9 )
+script = ExtResource( 10 )
+
+[node name="SlowMoTimer" type="Timer" parent="."]
+
+[node name="SlowMoRecovery" type="Timer" parent="."]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+[connection signal="timeout" from="SlowMoTimer" to="." method="_on_SlowMoTimer_timeout"]
+[connection signal="timeout" from="SlowMoRecovery" to="." method="_on_SlowMoRecovery_timeout"]

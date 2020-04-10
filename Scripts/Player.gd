@@ -19,6 +19,8 @@ var is_jumping = false
 var face_right = true
 var gun_show = false
 var can_shoot = true
+var can_slowmo = true
+var in_slowmo = false #this check if you're in recovery
 
 const FIREBALL = preload("res://Scenes/Fireball.tscn")
 const BULLET = preload("res://Scenes/Bullet.tscn")
@@ -33,7 +35,10 @@ onready var pos = $PlayerNode/Position2D
 
 func _ready():
 	$PlayerNode/Gun.hide()
-	$ShootTimer.wait_time = .15
+	$SlowMoBar.hide()
+	$ShootTimer.wait_time = .1
+	$SlowMoTimer.wait_time = 1.2
+	$SlowMoRecovery.wait_time = 3
 
 func _physics_process(delta):
 	var x_input = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -43,7 +48,7 @@ func _physics_process(delta):
 		motion.x += x_input * ACCELERATION * delta
 		motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
 
-	#Change the player either left or right
+	#Change the player to face either left or right
 	if x_input < 0:
 		face_right = false
 	elif x_input > 0:
@@ -76,7 +81,7 @@ func _physics_process(delta):
 	motion = move_and_slide_with_snap(motion, snap, Vector2.UP)
 
 func _process(delta):
-	print("pos  ", self.position.x , "  global  ", self.global_position.x)
+
 	if health <= 0:
 			check_death = true
 	if check_death == true:
@@ -93,11 +98,31 @@ func _process(delta):
 	if gun_show:
 		mouse_pos = get_global_mouse_position()
 		$PlayerNode/Gun.look_at(mouse_pos)
+		$SlowMoBar.show()
+		
 		if Input.is_action_pressed("ui_focus_next") and can_shoot:
 			shoot(pos)
 			
+		if Input.is_action_just_pressed("ui_focus_prev") and can_slowmo:
+			$SlowMoTimer.start()
+			in_slowmo = true
+			
+		if Input.is_action_just_released("ui_focus_prev") and can_slowmo:
+			can_slowmo = false
+			in_slowmo = false
+			$SlowMoRecovery.start()
+			$SlowMoTimer.stop()
+			
+		if can_slowmo:
+			if Input.is_action_pressed("ui_focus_prev") and in_slowmo:
+				Engine.time_scale = .3
+		else:
+			Engine.time_scale = 1
+			 
+	
 
-		
+
+	
 func take_damage():
 	health -= dmg
 	
@@ -120,3 +145,13 @@ func shoot(pos):
 
 func _on_ShootTimer_timeout():
 	can_shoot = true
+
+func _on_SlowMoTimer_timeout():
+	can_slowmo = false
+	in_slowmo = false
+	$SlowMoTimer.stop()
+	$SlowMoRecovery.start()
+
+func _on_SlowMoRecovery_timeout():
+	can_slowmo = true
+	$SlowMoRecovery.stop()
