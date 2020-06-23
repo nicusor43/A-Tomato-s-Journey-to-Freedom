@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/Sprites/tilesetOpenGameBackground.png" type="Texture" id=2]
@@ -10,6 +10,9 @@
 [ext_resource path="res://assets/Sprites/SlowMoBack.png" type="Texture" id=8]
 [ext_resource path="res://assets/Sprites/SlowMoProg.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/SlowMoBar.gd" type="Script" id=10]
+[ext_resource path="res://buton.png" type="Texture" id=11]
+[ext_resource path="res://buton_A.png" type="Texture" id=12]
+[ext_resource path="res://buton_B.png" type="Texture" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 18, 21 )
@@ -29,7 +32,20 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 15, 15 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 15, 15 )
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 15.0
+
 [node name="Player" type="KinematicBody2D"]
+z_index = 4
 script = ExtResource( 1 )
 MAX_SPEED = 400
 ACCELERATION = 1800
@@ -47,8 +63,6 @@ anims/RUn = SubResource( 2 )
 position = Vector2( 8, -1 )
 current = true
 zoom = Vector2( 0.7, 0.7 )
-drag_margin_h_enabled = false
-drag_margin_v_enabled = false
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_ignore_camera_zoom = true
@@ -61,7 +75,7 @@ centered = false
 [node name="PlayerNode" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="PlayerNode"]
-position = Vector2( -7.62939e-006, 1 )
+position = Vector2( -7.62939e-06, 1 )
 scale = Vector2( 1.35268, 1.27681 )
 texture = ExtResource( 3 )
 hframes = 2
@@ -107,6 +121,43 @@ script = ExtResource( 10 )
 [node name="SlowMoTimer" type="Timer" parent="."]
 
 [node name="SlowMoRecovery" type="Timer" parent="."]
+
+[node name="right" type="TouchScreenButton" parent="."]
+position = Vector2( -77.9574, 124.609 )
+rotation = 3.14159
+scale = Vector2( 2.56908, 2.44572 )
+normal = ExtResource( 11 )
+shape = SubResource( 3 )
+action = "ui_right"
+visibility_mode = 1
+
+[node name="left" type="TouchScreenButton" parent="."]
+position = Vector2( -248.291, 44.8434 )
+scale = Vector2( 2.53783, 2.50822 )
+normal = ExtResource( 11 )
+shape = SubResource( 4 )
+action = "ui_left"
+visibility_mode = 1
+
+[node name="shoot" type="TouchScreenButton" parent="."]
+position = Vector2( 184.175, 16.8319 )
+scale = Vector2( 2.29288, 2.20845 )
+normal = ExtResource( 13 )
+shape = SubResource( 5 )
+action = "ui_focus_next"
+visibility_mode = 1
+
+[node name="jump" type="TouchScreenButton" parent="."]
+position = Vector2( 118.301, 74.9799 )
+scale = Vector2( 2.16788, 2.14595 )
+z_index = 3
+z_as_relative = false
+normal = ExtResource( 12 )
+shape = SubResource( 6 )
+action = "ui_up"
+visibility_mode = 1
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 [connection signal="timeout" from="SlowMoTimer" to="." method="_on_SlowMoTimer_timeout"]
 [connection signal="timeout" from="SlowMoRecovery" to="." method="_on_SlowMoRecovery_timeout"]
+[connection signal="pressed" from="shoot" to="." method="_on_shoot_pressed"]
+[connection signal="released" from="shoot" to="." method="_on_shoot_released"]

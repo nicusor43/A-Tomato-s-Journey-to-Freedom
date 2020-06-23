@@ -29,7 +29,7 @@ _data = {
 position = Vector2( 377, 197 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 2897, -276 )
+position = Vector2( -1.98651, 8.1768 )
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2( 0, -3 )
